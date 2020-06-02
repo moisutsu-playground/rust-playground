@@ -1,3 +1,4 @@
+// まずはイテレータに生やすメソッドを定義し、自作したイテレータの働きをする構造体を返す
 trait DoubleTrait<T: Iterator>: Iterator + Sized
 where
     T::Item: Clone,
@@ -8,18 +9,19 @@ impl<T: Iterator> DoubleTrait<T> for T
 where
     T::Item: Clone,
 {
-    fn double(mut self) -> Double<Self> {
+    // このメソッドは、自作した構造体を返す働きしかない
+    fn double(self) -> Double<Self> {
         Double {
-            item: self.next(),
             iter: self,
         }
     }
 }
 
+// イテレータの役割をする自作の構造体
+// この構造体に生やすnextがイテレータの振る舞いを決める
 #[derive(Debug)]
 struct Double<T: Iterator> {
     iter: T,
-    item: Option<T::Item>,
 }
 impl<T: Iterator> Iterator for Double<T>
 where
@@ -30,7 +32,6 @@ where
         if let Some(n) = self.iter.next() {
             Some(n.clone() * n)
         } else {
-            self.item = None;
             None
         }
     }
