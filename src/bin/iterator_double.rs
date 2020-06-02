@@ -25,12 +25,12 @@ struct Double<T: Iterator> {
 }
 impl<T: Iterator> Iterator for Double<T>
 where
-    T::Item: Clone + std::ops::Mul<Output = T::Item>,
+    T::Item: Copy + std::ops::Mul<Output = T::Item>,
 {
     type Item = T::Item;
     fn next(&mut self) -> Option<T::Item> {
         if let Some(n) = self.iter.next() {
-            Some(n.clone() * n)
+            Some(n * n)
         } else {
             None
         }
