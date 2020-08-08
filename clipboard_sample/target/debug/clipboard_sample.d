@@ -1,1 +1,0 @@
-/Users/jun/ghq/github.com/moisutsu-playground/rust-playground/clipboard_sample/target/debug/clipboard_sample: /Users/jun/ghq/github.com/moisutsu-playground/rust-playground/clipboard_sample/src/main.rs
