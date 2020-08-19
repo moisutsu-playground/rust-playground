@@ -6,6 +6,7 @@ struct Arxiv {
     id: String,
     title: String,
     summary: String,
+    // authors: Vec<String>,
 }
 
 impl Arxiv {
@@ -32,48 +33,44 @@ async fn main() -> Result<()> {
     let mut arxivs = Vec::new();
 
     'outer: loop {
-        if let Ok(element) = parser.next() {
-            match element {
-                XmlEvent::StartElement { name, .. } => {
-                    match &name.local_name[..] {
-                        "entry" => {
-                            arxiv = Arxiv::new();
-                        }
-                        "id" => {
-                            if let Ok(XmlEvent::Characters(id)) = parser.next() {
-                                arxiv.id = id;
-                            }
-                        }
-                        "title" => {
-                            if let Ok(XmlEvent::Characters(title)) = parser.next() {
-                                arxiv.title = title;
-                            }
-                        }
-                        "summary" => {
-                            if let Ok(XmlEvent::Characters(summary)) = parser.next() {
-                                arxiv.summary = summary;
-                            }
-                        }
-                        _ => ()
-                    }
+        match parser.next()? {
+            XmlEvent::StartElement { name, .. } => match &name.local_name[..] {
+                "entry" => {
+                    arxiv = Arxiv::new();
                 }
-                XmlEvent::EndElement { name } => {
-                    match &name.local_name[..] {
-                        "entry" => {
-                            arxivs.push(arxiv.clone());
-                        }
-                        "feed" => {
-                            break 'outer;
-                        }
-                        _ => ()
-                    }
+                "id" => {
+                    arxiv.id = if let XmlEvent::Characters(id) = parser.next()? {
+                        id
+                    } else {
+                        arxiv.id
+                    };
                 }
-                _ => {
-                    ()
+                "title" => {
+                    arxiv.title = if let XmlEvent::Characters(title) = parser.next()? {
+                        title
+                    } else {
+                        arxiv.title
+                    };
                 }
-            }
-        } else {
-            break;
+                "summary" => {
+                    arxiv.summary = if let XmlEvent::Characters(summary) = parser.next()? {
+                        summary
+                    } else {
+                        arxiv.summary
+                    };
+                }
+                _ => (),
+            },
+            XmlEvent::EndElement { name } => match &name.local_name[..] {
+                "entry" => {
+                    arxivs.push(arxiv.clone());
+                }
+                "feed" => {
+                    break 'outer;
+                }
+                _ => (),
+            },
+            _ => (),
         }
     }
     for i in 0..arxivs.len() {
