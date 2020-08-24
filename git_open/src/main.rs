@@ -1,6 +1,5 @@
-use anyhow::Result;
-use std::process::Command;
 use std::os::unix::process::CommandExt;
+use std::process::Command;
 
 #[allow(non_camel_case_types)]
 trait Vec_u8_ToString {
@@ -13,7 +12,7 @@ impl Vec_u8_ToString for Vec<u8> {
     }
 }
 
-fn main() -> Result<()> {
+fn main() -> Result<(), std::io::Error> {
     let output = Command::new("git")
         .args(&["config", "--get", "remote.origin.url"])
         .output()?
@@ -23,8 +22,6 @@ fn main() -> Result<()> {
         "https://{}",
         output.split("@").collect::<Vec<_>>()[1].replacen(":", "/", 1)
     );
-    Command::new("open")
-        .arg(url)
-        .exec();
+    Command::new("open").arg(url).exec();
     Ok(())
 }
