@@ -1,5 +1,5 @@
-use std::{thread, time};
 use clap::Clap;
+use std::{thread, time};
 
 #[derive(Clap)]
 struct Time {
@@ -15,23 +15,33 @@ struct Time {
 
 impl Time {
     fn advance(&mut self) -> bool {
-        if self.second != 0 {
-            self.second -= 1;
-            return true;
-        }
-        if self.minute != 0 {
-            self.minute -= 1;
-            return true;
-        }
-        if self.hour != 0 {
-            self.hour -= 1;
-            return true;
-        }
-        if self.day != 0 {
+        if self.day == 0 && self.hour == 0 && self.minute == 0 && self.second == 0 {
+            false
+        } else {
+            if self.second != 0 {
+                self.second -= 1;
+                return true;
+            } else {
+                self.second = 59;
+            }
+
+            if self.minute != 0 {
+                self.minute -= 1;
+                return true;
+            } else {
+                self.minute = 59;
+            }
+
+            if self.hour != 0 {
+                self.hour -= 1;
+                return true;
+            } else {
+                self.hour = 59;
+            }
+
             self.day -= 1;
-            return true;
+            true
         }
-        false
     }
 }
 
