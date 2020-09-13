@@ -47,7 +47,7 @@ impl Time {
 
 impl ToString for Time {
     fn to_string(&self) -> String {
-        format!("{}:{}:{}:{}", self.day, self.hour, self.minute, self.second)
+        format!("{}d:{}h:{}m:{}s", self.day, self.hour, self.minute, self.second)
     }
 }
 
