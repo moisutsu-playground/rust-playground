@@ -1,5 +1,5 @@
 use clap::Clap;
-use std::{thread, time};
+use std::{fmt, thread, time};
 
 #[derive(Clap)]
 struct Time {
@@ -45,9 +45,13 @@ impl Time {
     }
 }
 
-impl ToString for Time {
-    fn to_string(&self) -> String {
-        format!("{}d:{}h:{}m:{}s", self.day, self.hour, self.minute, self.second)
+impl fmt::Display for Time {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{}d:{}h:{}m:{}s",
+            self.day, self.hour, self.minute, self.second
+        )
     }
 }
 
@@ -57,7 +61,7 @@ fn main() {
     while time.advance() {
         // Clear display
         print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
-        println!("{}", time.to_string());
+        println!("{}", time);
         thread::sleep(one_second);
     }
 }
