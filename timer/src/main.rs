@@ -1,5 +1,13 @@
 use clap::Clap;
 use std::{fmt, thread, time};
+use Color::*;
+
+enum Color {
+    Red = 31,
+    Green,
+    Yellow,
+    Blue,
+}
 
 #[derive(Clap)]
 struct Time {
@@ -49,10 +57,21 @@ impl fmt::Display for Time {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{}d:{}h:{}m:{}s",
-            self.day, self.hour, self.minute, self.second
+            "{}{}:{}{}:{}{}:{}{}",
+            self.day,
+            color(Red, "d"),
+            self.hour,
+            color(Green, "h"),
+            self.minute,
+            color(Yellow, "m"),
+            self.second,
+            color(Blue, "s")
         )
     }
+}
+
+fn color(color: Color, s: &str) -> String {
+    format!("\x1b[{}m{}\x1b[m", color as i32, s)
 }
 
 fn main() {
