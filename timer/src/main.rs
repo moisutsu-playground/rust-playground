@@ -29,23 +29,20 @@ impl Time {
             if self.second != 0 {
                 self.second -= 1;
                 return true;
-            } else {
-                self.second = 59;
             }
+            self.second = 59;
 
             if self.minute != 0 {
                 self.minute -= 1;
                 return true;
-            } else {
-                self.minute = 59;
             }
+            self.minute = 59;
 
             if self.hour != 0 {
                 self.hour -= 1;
                 return true;
-            } else {
-                self.hour = 59;
             }
+            self.hour = 59;
 
             self.day -= 1;
             true
