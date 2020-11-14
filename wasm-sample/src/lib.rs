@@ -1,16 +1,11 @@
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-extern "C" {
-    #[wasm_bindgen(js_namespace = console)]
-    fn log(s: &str);
-}
-
-#[allow(unused_unsafe)]
-#[wasm_bindgen]
-pub fn greet(name: &str) {
-    unsafe {
-        log(&format!("Hello, {}!", name));
+pub fn test(x: i32) -> i32 {
+    if x <= 0 {
+        x
+    } else {
+        test(x - 1) + x
     }
 }
 
