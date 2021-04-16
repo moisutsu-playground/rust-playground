@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 anyhow = "1.0.0"
 proconio = { version = "0.4.1", features = ["derive"] }
+itertools = "0.10.0"
